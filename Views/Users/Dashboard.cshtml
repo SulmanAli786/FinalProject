@@ -1,0 +1,50 @@
+﻿﻿
+@{
+    ViewData["Title"] = "Dashboard";
+}
+@{
+
+    
+    var category = ViewBag.Categories;
+    var users = ViewBag.Users;
+    var vendors = ViewBag.Vendors;
+    var products = ViewBag.Products;
+}
+
+<div class="row">
+    <div class="card" style="width: 14rem;">
+        <img class="card-img-top" src="~/img/categories1.jpg" style="max-height:400px" alt="Card image cap">
+        <div class="card-body">
+            <a asp-controller="Categories" asp-action="Index" class="card-text btn btn-primary" type="button">
+                Total Categories: <span class="badge badge-light">@category</span>
+            </a>
+        </div>
+    </div>
+
+    <div class="card" style="width: 14rem;">
+        <img class="card-img-top" src="~/img/Users1.jpg" style="max-height:400px" alt="Card image cap">
+        <div class="card-body">
+            <a asp-controller="Users" asp-action="Index" class="card-text btn btn-primary" type="button">
+                Total Users: <span class="badge badge-light">@users</span>
+            </a>
+        </div>
+    </div>
+
+    <div class="card" style="width: 14rem;">
+        <img class="card-img-top" src="~/img/Vendors1.jpg" style="max-height:400px" alt="Card image cap">
+        <div class="card-body">
+            <a asp-controller="Vendors" asp-action="Index" class="card-text btn btn-primary" type="button">
+                Total Vendors: <span class="badge badge-light">@vendors</span>
+            </a>
+        </div>
+    </div>
+
+    <div class="card" style="width: 14rem;">
+        <img class="card-img-top" src="~/img/Products1.jpg" style="max-height:400px" alt="Card image cap">
+        <div class="card-body">
+            <a asp-controller="Products" asp-action="Index" class="card-text btn btn-primary" type="button">
+                Total Products: <span class="badge badge-light">@products</span>
+            </a>
+        </div>
+    </div>
+</div>

@@ -23,7 +23,11 @@ namespace Shopping_Cart.Controllers
         // GET: Customers
         public async Task<IActionResult> Index()
         {
-              return _context.Customers != null ? 
+            if (HttpContext.Session.GetString("Username") == null)
+            {
+                return RedirectToAction(nameof(UsersController.Login), "Users");
+            }
+            return _context.Customers != null ? 
                           View(await _context.Customers.ToListAsync()) :
                           Problem("Entity set 'ShoppingCartContext.Customers'  is null.");
         }
@@ -31,6 +35,10 @@ namespace Shopping_Cart.Controllers
         // GET: Customers/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+            if (HttpContext.Session.GetString("Username") == null)
+            {
+                return RedirectToAction(nameof(UsersController.Login), "Users");
+            }
             if (id == null || _context.Customers == null)
             {
                 return NotFound();
@@ -49,6 +57,10 @@ namespace Shopping_Cart.Controllers
         // GET: Customers/Create
         public IActionResult Create()
         {
+            if (HttpContext.Session.GetString("Username") == null)
+            {
+                return RedirectToAction(nameof(UsersController.Login), "Users");
+            }
             return View();
         }
 
@@ -77,6 +89,10 @@ namespace Shopping_Cart.Controllers
         // GET: Customers/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+            if (HttpContext.Session.GetString("Username") == null)
+            {
+                return RedirectToAction(nameof(UsersController.Login), "Users");
+            }
             if (id == null || _context.Customers == null)
             {
                 return NotFound();
@@ -128,6 +144,10 @@ namespace Shopping_Cart.Controllers
         // GET: Customers/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
+            if (HttpContext.Session.GetString("Username") == null)
+            {
+                return RedirectToAction(nameof(UsersController.Login), "Users");
+            }
             if (id == null || _context.Customers == null)
             {
                 return NotFound();

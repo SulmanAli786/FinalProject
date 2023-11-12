@@ -21,7 +21,11 @@ namespace Shopping_Cart.Controllers
         // GET: Purchases
         public async Task<IActionResult> Index()
         {
-              return _context.Purchases != null ? 
+            if (HttpContext.Session.GetString("Username") == null)
+            {
+                return RedirectToAction(nameof(UsersController.Login), "Users");
+            }
+            return _context.Purchases != null ? 
                           View(await _context.Purchases.ToListAsync()) :
                           Problem("Entity set 'ShoppingCartContext.Purchases'  is null.");
         }
@@ -29,6 +33,10 @@ namespace Shopping_Cart.Controllers
         // GET: Purchases/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+            if (HttpContext.Session.GetString("Username") == null)
+            {
+                return RedirectToAction(nameof(UsersController.Login), "Users");
+            }
             if (id == null || _context.Purchases == null)
             {
                 return NotFound();
@@ -47,6 +55,10 @@ namespace Shopping_Cart.Controllers
         // GET: Purchases/Create
         public IActionResult Create()
         {
+            if (HttpContext.Session.GetString("Username") == null)
+            {
+                return RedirectToAction(nameof(UsersController.Login), "Users");
+            }
             return View();
         }
 
@@ -69,6 +81,10 @@ namespace Shopping_Cart.Controllers
         // GET: Purchases/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+            if (HttpContext.Session.GetString("Username") == null)
+            {
+                return RedirectToAction(nameof(UsersController.Login), "Users");
+            }
             if (id == null || _context.Purchases == null)
             {
                 return NotFound();
@@ -120,6 +136,10 @@ namespace Shopping_Cart.Controllers
         // GET: Purchases/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
+            if (HttpContext.Session.GetString("Username") == null)
+            {
+                return RedirectToAction(nameof(UsersController.Login), "Users");
+            }
             if (id == null || _context.Purchases == null)
             {
                 return NotFound();

@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity.UI.V4.Pages.Account.Manage.Internal;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Shopping_Cart.DTOs;
 using Shopping_Cart.Models;
 
 namespace Shopping_Cart.Controllers
@@ -23,7 +25,11 @@ namespace Shopping_Cart.Controllers
         // GET: Users
         public async Task<IActionResult> Index()
         {
-              return _context.Users != null ? 
+            if (HttpContext.Session.GetString("Username") == null)
+            {
+                return RedirectToAction(nameof(Login));
+            }
+            return _context.Users != null ? 
                           View(await _context.Users.ToListAsync()) :
                           Problem("Entity set 'ShoppingCartContext.Users'  is null.");
         }
@@ -49,6 +55,10 @@ namespace Shopping_Cart.Controllers
         // GET: Users/Create
         public IActionResult Create()
         {
+            if (HttpContext.Session.GetString("Username") == null)
+            {
+                return RedirectToAction(nameof(Login));
+            }
             return View();
         }
 
@@ -57,14 +67,24 @@ namespace Shopping_Cart.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Image,Email,PhoneNo,Cnic,Address,Role,Status,SystemUserId,CreatedBy,CreatedDate,ModifiedBy,ModifiedDate")] User user, IFormFile?Image)
+        public async Task<IActionResult> Create(LoginsModel login, User user)
         {
-            var ImagePath = "/imgs/" + Guid.NewGuid().ToString() + Path.GetExtension(Image.FileName);
-            using (FileStream dd = new FileStream(_webHostEnvironment.WebRootPath + ImagePath, FileMode.Create))
-            {
-                Image.CopyTo(dd);
-            }
-            user.Image += "" + ImagePath;
+
+            SystemUsers system = new SystemUsers();
+            system.Username = login.Username;
+            system.Password = login.Password;
+            _context.SystemUsers.Add(system);
+            _context.SaveChanges();
+
+            User user1 = new User();
+            user1.Email = login.Email;
+            user1.Address = login.Address;
+            user1.PhoneNo = login.PhoneNo;
+            user1.SystemUserId = system.Id;
+            user1.Role = login.Role;
+            user1.Cnic = login.Cnic;
+            user1.Name = login.Name;
+
             if (ModelState.IsValid)
             {
                 _context.Add(user);
@@ -77,6 +97,10 @@ namespace Shopping_Cart.Controllers
         // GET: Users/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+            if (HttpContext.Session.GetString("Username") == null)
+            {
+                return RedirectToAction(nameof(Login));
+            }
             if (id == null || _context.Users == null)
             {
                 return NotFound();
@@ -128,6 +152,10 @@ namespace Shopping_Cart.Controllers
         // GET: Users/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
+            if (HttpContext.Session.GetString("Username") == null)
+            {
+                return RedirectToAction(nameof(Login));
+            }
             if (id == null || _context.Users == null)
             {
                 return NotFound();
@@ -165,6 +193,39 @@ namespace Shopping_Cart.Controllers
         private bool UserExists(int id)
         {
           return (_context.Users?.Any(e => e.Id == id)).GetValueOrDefault();
+        }
+        public IActionResult Dashboard()
+        {
+            ViewBag.Categories = _context.Categories.Count();
+            ViewBag.Users = _context.Users.Count();
+            ViewBag.Vendors = _context.Vendors.Count();
+            ViewBag.Products = _context.Products.Count();
+            return View();
+        }
+        [HttpGet]
+        public IActionResult Login()
+        {
+            return View();
+        }
+        [HttpPost]
+        public IActionResult Login(LoginsModel login)
+        {
+            var logins = _context.SystemUsers.Where(m => m.Username == login.Username && m.Password == login.Password).FirstOrDefault();
+            if (logins == null)
+            {
+                return View();
+            }
+
+            HttpContext.Session.SetString("Username", logins.Username);
+
+            return RedirectToAction(nameof(Dashboard));
+        }
+
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Clear();
+
+            return RedirectToAction(nameof(Login));
         }
     }
 }

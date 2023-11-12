@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Shopping_Cart.Models
+﻿namespace Shopping_Cart.Models
 {
-    public partial class SystemUser
+    public class SystemUsers
     {
         public int Id { get; set; }
         public string? Username { get; set; }

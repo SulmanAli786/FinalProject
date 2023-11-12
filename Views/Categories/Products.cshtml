@@ -1,0 +1,35 @@
+﻿@model IEnumerable<Shopping_Cart.Models.Product>
+
+
+@{
+    Layout = "_Layout2";
+}
+
+<div class="container-fluid py-6 px-5">
+    <div class="text-center mx-auto mb-5" style="max-width: 600px;">
+        <h1 class="display-5 text-uppercase mb-4">Men &<span class="text-primary"> Women </span> Collection</h1>
+    </div>
+
+    <div class="row g-5">
+        @foreach (var item in Model)
+        {
+            <div class="col-xl-3 col-lg-4 col-md-6">
+                <div class="row g-0">
+                    <div class="col-10" style="min-height: 300px;">
+                        <div class="position-relative h-100">
+                            <img class="position-absolute w-100 h-100" src="@item.Images" style="object-fit: cover;">
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="bg-light p-4">
+                            <a class="text-uppercase" asp-action="Pdetails" asp-route-id="@item.Id">@item.Name</a>
+                            <span>@item.Description</span>
+                            <span>@item.Price</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+</div>

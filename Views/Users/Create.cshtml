@@ -1,4 +1,4 @@
-﻿@model Shopping_Cart.Models.User
+﻿@model Shopping_Cart.DTOs.LoginsModel
 
 @{
     ViewData["Title"] = "Create";
@@ -16,6 +16,16 @@
                 <label asp-for="Name" class="control-label"></label>
                 <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Username" class="control-label"></label>
+                <input asp-for="Username" class="form-control" />
+                <span asp-validation-for="Username" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Password" class="control-label"></label>
+                <input asp-for="Password" class="form-control" />
+                <span asp-validation-for="Password" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Email" class="control-label"></label>
@@ -43,23 +53,9 @@
                 <span asp-validation-for="Role" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Status" class="control-label"></label>
-                @*<input asp-for="Status" class="form-control" />*@
-                <select asp-for="Status" class="form-control">
-                    <option value="active">active</option>
-                    <option value="inactive">inactive</option>
-                </select>
-                <span asp-validation-for="Status" class="text-danger"></span>
-            </div>
-            <div class="form-group">
                 <label asp-for="SystemUserId" class="control-label"></label>
                 <input asp-for="SystemUserId" class="form-control" />
                 <span asp-validation-for="SystemUserId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Image" class="control-label"></label>
-                <input name="Image" type="file" class="form-control" multiple />
-                <span asp-validation-for="Image" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />

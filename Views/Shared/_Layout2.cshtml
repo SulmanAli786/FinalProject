@@ -49,12 +49,21 @@
                     <a asp-controller="Home" asp-action="Index" class="nav-item nav-link active">Home</a>
                     <a asp-controller="Home" asp-action="About" class="nav-item nav-link">About Us</a>
                     <div class="nav-item dropdown">
-                        <a href="" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Categories</a>
+                        <a  class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Categories</a>
                         <div class="dropdown-menu m-0">
-                            <a asp-controller="Home" asp-action="Shirts" class="dropdown-item">Shirtrs</a>
+                            @if (!string.IsNullOrEmpty(Context.Session.GetString("CategoriesList")))
+                            {
+                                var List = Context.Session.GetString("CategoriesList");
+                                var CommaSprited = List.Split(",");
+                                foreach (var items in CommaSprited)
+                                {
+                                    <a asp-controller="Categories" asp-action="Products" asp-route-name="@items" class="nav-item nav-link dropdown">@items</a>
+                                }
+                            }
+                           @* <a asp-controller="Home" asp-action="Shirts" class="dropdown-item">Shirtrs</a>
                             <a asp-controller="Home" asp-action="Jeans" class="dropdown-item">Jeans</a>
                             <a asp-controller="Home" asp-action="Jackets" class="dropdown-item">Jackets</a>
-                            <a asp-controller="Home" asp-action="Pdetails" class="dropdown-item">Jewellery</a>
+                            <a asp-controller="Home" asp-action="Pdetails" class="dropdown-item">Jewellery</a>*@
                            
                         </div>
                     </div>

@@ -18,7 +18,9 @@ namespace Shopping_Cart.Controllers
 
         public IActionResult Index()
         {
-            ViewBag.category = _context.Products.ToList();
+            var CategoriesList = _context.Categories.Select(m => m.Name).ToList();
+            HttpContext.Session.SetString("CategoriesList", String.Join(",", CategoriesList));
+            //ViewBag.category = _context.Products.ToList();
             return View();
         }
 
@@ -38,22 +40,7 @@ namespace Shopping_Cart.Controllers
         }
 
         // GET: Products/Details/5
-        public async Task<IActionResult> Pdetails(int? id)
-        {
-            if (id == null || _context.Products == null)
-            {
-                return NotFound();
-            }
-
-            var product = await _context.Products
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (product == null)
-            {
-                return NotFound();
-            }
-
-            return View(product);
-        }
+      
 
 
 
@@ -78,7 +65,7 @@ namespace Shopping_Cart.Controllers
             ViewBag.category = _context.Products.ToList();
             return View();
         }
-        public IActionResult Jewellery()
+        public IActionResult Shoes()
         {
             ViewBag.category = _context.Products.ToList();
             return View();

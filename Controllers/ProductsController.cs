@@ -18,6 +18,10 @@ namespace Shopping_Cart.Controllers
         // GET: Products
         public async Task<IActionResult> Index()
         {
+            if (HttpContext.Session.GetString("Username") == null)
+            {
+                return RedirectToAction(nameof(UsersController.Login), "Users");
+            }
             //return _context.Products != null ? 
             //            View(await _context.Products.ToListAsync()) :
             //            Problem("Entity set 'ShoppingCartContext.Products'  is null.");
@@ -39,6 +43,10 @@ namespace Shopping_Cart.Controllers
         // GET: Products/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+            if (HttpContext.Session.GetString("Username") == null)
+            {
+                return RedirectToAction(nameof(UsersController.Login), "Users");
+            }
             if (id == null || _context.Products == null)
             {
                 return NotFound();
@@ -57,6 +65,10 @@ namespace Shopping_Cart.Controllers
         // GET: Products/Create
         public IActionResult Create()
         {
+            if (HttpContext.Session.GetString("Username") == null)
+            {
+                return RedirectToAction(nameof(UsersController.Login), "Users");
+            }
             ViewBag.CategoryList = _context.Categories.ToList();
             return View();
         }
@@ -99,6 +111,10 @@ namespace Shopping_Cart.Controllers
         // GET: Products/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+            if (HttpContext.Session.GetString("Username") == null)
+            {
+                return RedirectToAction(nameof(UsersController.Login), "Users");
+            }
             if (id == null || _context.Products == null)
             {
                 return NotFound();
@@ -156,6 +172,10 @@ namespace Shopping_Cart.Controllers
         // GET: Products/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
+            if (HttpContext.Session.GetString("Username") == null)
+            {
+                return RedirectToAction(nameof(UsersController.Login), "Users");
+            }
             if (id == null || _context.Products == null)
             {
                 return NotFound();

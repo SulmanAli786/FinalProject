@@ -23,7 +23,11 @@ namespace Shopping_Cart.Controllers
         // GET: Categories
         public async Task<IActionResult> Index()
         {
-              return _context.Categories != null ? 
+            if (HttpContext.Session.GetString("Username") == null)
+            {
+                return RedirectToAction(nameof(UsersController.Login), "Users");
+            }
+            return _context.Categories != null ? 
                           View(await _context.Categories.ToListAsync()) :
                           Problem("Entity set 'ShoppingCartContext.Categories'  is null.");
         }
@@ -31,6 +35,10 @@ namespace Shopping_Cart.Controllers
         // GET: Categories/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+            if (HttpContext.Session.GetString("Username") == null)
+            {
+                return RedirectToAction(nameof(UsersController.Login), "Users");
+            }
             if (id == null || _context.Categories == null)
             {
                 return NotFound();
@@ -49,6 +57,10 @@ namespace Shopping_Cart.Controllers
         // GET: Categories/Create
         public IActionResult Create()
         {
+            if (HttpContext.Session.GetString("Username") == null)
+            {
+                return RedirectToAction(nameof(UsersController.Login), "Users");
+            }
             return View();
         }
 
@@ -77,6 +89,10 @@ namespace Shopping_Cart.Controllers
         // GET: Categories/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+            if (HttpContext.Session.GetString("Username") == null)
+            {
+                return RedirectToAction(nameof(UsersController.Login), "Users");
+            }
             if (id == null || _context.Categories == null)
             {
                 return NotFound();
@@ -128,6 +144,10 @@ namespace Shopping_Cart.Controllers
         // GET: Categories/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
+            if (HttpContext.Session.GetString("Username") == null)
+            {
+                return RedirectToAction(nameof(UsersController.Login), "Users");
+            }
             if (id == null || _context.Categories == null)
             {
                 return NotFound();
@@ -165,6 +185,30 @@ namespace Shopping_Cart.Controllers
         private bool CategoryExists(int id)
         {
           return (_context.Categories?.Any(e => e.Id == id)).GetValueOrDefault();
+        }
+        public async Task<IActionResult> Pdetails(int? id)
+        {
+            if (id == null || _context.Products == null)
+            {
+                return NotFound();
+            }
+
+            var product = await _context.Products
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            return View(product);
+        }
+
+
+
+        public async Task<IActionResult> Products(string name = "")
+        {
+            var Product = _context.Products.Where(m => m.Name == name).ToList();
+            return View(Product);
         }
     }
 }
